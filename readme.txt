@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: dragosgaf
 Donate link: http://dragosgaftoneanu.com/
-Tags: revolutonslider, vulnerability, exploit
+Tags: revolutionslider, vulnerability, exploit
 Requires at least: 3.0
 Tested up to: 4.1
 Stable tag: 2.0
@@ -40,4 +40,4 @@ It's useful to use it if your Revolution Slider is in a template and you can't u
 
 == Screenshots ==
 
-No screenshots available. It's just a short php code to patch the vulnerability.
+No screenshots available.
