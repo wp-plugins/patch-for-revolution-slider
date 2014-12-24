@@ -3,7 +3,7 @@
 Plugin Name: Patch for Revolution Slider
 Author: Dragos Gaftoneanu
 Description: This plugin repairs the vulnerabilities in Revolution Slider without the need to update your plugin and/or theme.
-Version: 2.1
+Version: 2.2
 Author URI: http://dragosgaftoneanu.com/
 */
 
@@ -49,7 +49,7 @@ function revsliderpatch_blockafl()
 	if(stristr($_SERVER["SCRIPT_FILENAME"],"/wp-admin/admin-ajax.php"))
 	{
 		$_POST['action'] = preg_replace('/[^\da-zA-Z0-9_]/i', '', $_POST['action']);
-		if ((stristr($_POST['action'],"revslider_ajax_action") || stristr($_POST['action'],"showbiz_ajax_action")) && !is_user_logged_in())
+		if ((stristr($_POST['action'],"revslider_ajax_action") || stristr($_POST['action'],"showbiz_ajax_action")))
 		{
 			$wpdb->query($wpdb->prepare("insert into revsliderpatch_blacklist(IP,date,exploit) values ('%s','%d','%s')",$_SERVER['REMOTE_ADDR'],time(),"Arbitrary File Upload"));
 			http_response_code(404);
