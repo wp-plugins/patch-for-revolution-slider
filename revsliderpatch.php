@@ -3,7 +3,7 @@
 Plugin Name: Patch for Revolution Slider
 Author: Dragos Gaftoneanu
 Description: This plugin repairs the vulnerabilities in Revolution Slider without the need to update your plugin and/or theme.
-Version: 2.0
+Version: 2.1
 Author URI: http://dragosgaftoneanu.com/
 */
 
