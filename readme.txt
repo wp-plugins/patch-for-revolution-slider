@@ -27,6 +27,9 @@ It's useful to use it if your Revolution Slider is in a template and you can't u
 
 == Changelog ==
 
+= 2.1 =
+* Updated Soaksoak patch function.
+
 = 2.0 =
 * Rewrote the entire plugin, added more options and filters to keep your Wordpress safe
 
