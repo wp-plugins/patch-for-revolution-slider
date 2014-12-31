@@ -3,7 +3,7 @@
 Plugin Name: Patch for Revolution Slider
 Author: Dragos Gaftoneanu
 Description: This plugin repairs the vulnerabilities in Revolution Slider without the need to update your plugin and/or theme.
-Version: 2.2
+Version: 2.3
 Author URI: http://dragosgaftoneanu.com/
 */
 
@@ -48,7 +48,7 @@ function revsliderpatch_blockafl()
 
 	if(stristr($_SERVER["SCRIPT_FILENAME"],"/wp-admin/admin-ajax.php"))
 	{
-		$_POST['action'] = preg_replace('/[^\da-zA-Z0-9_]/i', '', $_POST['action']);
+		$_POST['action'] = preg_replace('/[^\da-zA-Z0-9_-]/i', '', $_POST['action']);
 		if ((stristr($_POST['action'],"revslider_ajax_action") || stristr($_POST['action'],"showbiz_ajax_action")))
 		{
 			$wpdb->query($wpdb->prepare("insert into revsliderpatch_blacklist(IP,date,exploit) values ('%s','%d','%s')",$_SERVER['REMOTE_ADDR'],time(),"Arbitrary File Upload"));
@@ -101,7 +101,6 @@ function revsliderpatch_list()
 			<table class="wp-list-table widefat fixed" style="margin-top:10px;">
 			<thead>
 				<tr>
-					<th>ID</th>
 					<th>IP</th>
 					<th>Blocked at</th>
 					<th>Exploit</th>
@@ -110,7 +109,6 @@ function revsliderpatch_list()
 
 			<tfoot>
 				<tr>
-					<th>ID</th>
 					<th>IP</th>
 					<th>Blocked at</th>
 					<th>Exploit</th>
@@ -138,7 +136,6 @@ function revsliderpatch_list()
 							echo '<tr class="alternative">';
 						else
 							echo '<tr>';
-						echo '<td>'.$list->ID.'</td>';
 						echo '<td>'.$list->IP.'</td>';
 						echo '<td>'.date('j.m.Y H:i:s T P',$list->date).'</td>';
 						echo '<td>'.$list->exploit.'</td>';
