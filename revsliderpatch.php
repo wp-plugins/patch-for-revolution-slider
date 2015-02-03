@@ -3,7 +3,7 @@
 Plugin Name: Patch for Revolution Slider
 Author: Dragos Gaftoneanu
 Description: This plugin repairs the vulnerabilities in Revolution Slider without the need to update your plugin and/or theme.
-Version: 2.3.1
+Version: 2.3.2
 Author URI: http://dragosgaftoneanu.com/
 */
 
@@ -36,7 +36,6 @@ function revsliderpatch_blocklfd()
 		if (!in_array($q[count($q)-1],$accepted))
 		{
 			$wpdb->query($wpdb->prepare("insert into revsliderpatch_blacklist(IP,date,exploit) values ('%s','%d','%s')",$_SERVER['REMOTE_ADDR'],time(),"Local File Download"));
-			http_response_code(404);
 			die();
 		}
 	}
@@ -48,12 +47,17 @@ function revsliderpatch_blockafl()
 
 	if(stristr($_SERVER["SCRIPT_FILENAME"],"/wp-admin/admin-ajax.php"))
 	{
-		$_POST['action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_POST['action']);
-		$_POST['client_action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_POST['client_action']);
+		if($_POST['action'] != "")
+			$_POST['action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_POST['action']);
+		else
+			$_POST['action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_REQUEST['action']);
+		if($_POST['client_action'] != "")
+			$_POST['client_action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_POST['client_action']);
+		else
+			$_POST['client_action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_REQUEST['client_action']);
 		if ((stristr($_POST['action'],"revslider_ajax_action") || stristr($_POST['action'],"showbiz_ajax_action")) && $_POST['client_action']=="update_plugin")
 		{
 			$wpdb->query($wpdb->prepare("insert into revsliderpatch_blacklist(IP,date,exploit) values ('%s','%d','%s')",$_SERVER['REMOTE_ADDR'],time(),"Arbitrary File Upload"));
-			http_response_code(404);
 			die();
 		}
 	}

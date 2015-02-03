@@ -4,7 +4,7 @@ Donate link: http://dragosgaftoneanu.com/
 Tags: revolutionslider, vulnerability, exploit, security, patch
 Requires at least: 3.0
 Tested up to: 4.1
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,6 +26,10 @@ Just upload the plugin to wp-content/plugins/, activate it and you don't need to
 It's useful to use it if your Revolution Slider is in a template and you can't update it at the moment (eg. if the template has been modified).
 
 == Changelog ==
+
+= 2.3.2 =
+* Removed http_response_code because not all hosts have this function
+* Changed the algorithm for cleaning the post variables in Arbitrary File Upload section (thanks @darookee)
 
 = 2.3.1 =
 * Repaired the bug that broke some RevSlider functions
