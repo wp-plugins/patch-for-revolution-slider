@@ -3,7 +3,7 @@
 Plugin Name: Patch for Revolution Slider
 Author: Dragos Gaftoneanu
 Description: This plugin repairs the vulnerabilities in Revolution Slider without the need to update your plugin and/or theme.
-Version: 2.3.2
+Version: 2.4.1
 Author URI: http://dragosgaftoneanu.com/
 */
 
@@ -15,14 +15,18 @@ The following functions will block the existent known vulnerabilities in Revolut
 -> This function blocks the Local File Download vulnerability in wp-admin/admin-ajax.php
 
 2. revsliderpatch_blockafl()
--> This function block the Arbitrary File Upload vulnerability in wp-admin/admin-ajax.php
+-> This function blocks the Arbitrary File Upload vulnerability in wp-admin/admin-ajax.php
 -> The vulnerability is best known from the SoakSoak campaign in December 2014
 -> The function patches both Revolution Slider and Showbiz Pro
+
+3. revsliderpatch_blockxss()
+-> This function blocks a semi 0-day persistent XSS vulnerability
 
 *******************************************************************************************************/
 
 revsliderpatch_blocklfd();
 revsliderpatch_blockafl();
+revsliderpatch_blockxss();
 
 function revsliderpatch_blocklfd()
 {
@@ -36,7 +40,7 @@ function revsliderpatch_blocklfd()
 		if (!in_array($q[count($q)-1],$accepted))
 		{
 			$wpdb->query($wpdb->prepare("insert into revsliderpatch_blacklist(IP,date,exploit) values ('%s','%d','%s')",$_SERVER['REMOTE_ADDR'],time(),"Local File Download"));
-			die();
+			die("Revolution Slider hack attempt detected and logged.");
 		}
 	}
 }
@@ -58,7 +62,28 @@ function revsliderpatch_blockafl()
 		if ((stristr($_POST['action'],"revslider_ajax_action") || stristr($_POST['action'],"showbiz_ajax_action")) && $_POST['client_action']=="update_plugin")
 		{
 			$wpdb->query($wpdb->prepare("insert into revsliderpatch_blacklist(IP,date,exploit) values ('%s','%d','%s')",$_SERVER['REMOTE_ADDR'],time(),"Arbitrary File Upload"));
-			die();
+			die("Revolution Slider hack attempt detected and logged.");
+		}
+	}
+}
+
+function revsliderpatch_blockxss()
+{
+	global $wpdb;	
+
+	if(stristr($_SERVER["SCRIPT_FILENAME"],"/wp-admin/admin-ajax.php"))
+	{
+		if($_POST['action'] != "")
+			$_POST['action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_POST['action']);
+		else
+			$_POST['action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_REQUEST['action']);
+		if($_POST['client_action'] != "")
+			$_POST['client_action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_POST['client_action']);
+		else
+			$_POST['client_action'] = preg_replace('/[^a-zA-Z_\-0-9]/i', '', $_REQUEST['client_action']);
+		if ((stristr($_POST['action'],"revslider_ajax_action") || stristr($_POST['action'],"showbiz_ajax_action")) && $_POST['client_action']=="update_captions_css")
+		{
+			$_POST['data'] = htmlentities($_POST['data'],ENT_QUOTES);
 		}
 	}
 }
