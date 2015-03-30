@@ -20,7 +20,7 @@ The following functions will block the existent known vulnerabilities in Revolut
 -> The function patches both Revolution Slider and Showbiz Pro
 
 3. revsliderpatch_blockxss()
--> This function blocks a semi 0-day persistent XSS vulnerability
+-> This function blocks an old persistent XSS vulnerability (for versions older than 4.2)
 
 *******************************************************************************************************/
 

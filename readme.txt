@@ -4,7 +4,7 @@ Donate link: http://dragosgaftoneanu.com/
 Tags: revolutionslider, vulnerability, exploit, security, patch
 Requires at least: 3.0
 Tested up to: 4.1
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,8 +27,8 @@ It's useful to use it if your Revolution Slider is in a template and you can't u
 
 == Changelog ==
 
-= 2.4.1 =
-* The plugin now patches a semi 0-day persistent XSS vulnerability
+= 2.4.2 =
+* The plugin now patches an old persistent XSS vulnerability (for versions older than 4.2)
 
 = 2.3.2 =
 * Removed http_response_code because not all hosts have this function
